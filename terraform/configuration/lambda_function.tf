@@ -21,7 +21,7 @@ EOF
 resource "aws_lambda_function" "cloudwatch_event_handler" {
   function_name    = "cloudwatch_event_handler"
   role             = "${aws_iam_role.cloudwatch_event_handler_lambda_iam.arn}"
-  handler          = "main:handler"
+  handler          = "main.handler"
   runtime          = "python3.6"
 
   s3_bucket         = "aws-health-notif-demo-lambda-artifacts"
