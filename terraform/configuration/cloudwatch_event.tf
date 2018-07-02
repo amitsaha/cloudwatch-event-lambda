@@ -5,15 +5,13 @@ resource "aws_cloudwatch_event_rule" "ec2_state_change" {
   event_pattern = <<PATTERN
 {
   "source": [ "aws.ec2" ],
-  "detail-type": [ "EC2 Instance State-change Notification" ],
-  "detail": {
-    "state": [ "running" ]
+  "detail-type": [ "EC2 Instance State-change Notification" ]
 }
 PATTERN
 }
 
 resource "aws_cloudwatch_event_target" "lambda" {
-  rule      = "${aws_cloudwatch_event_rule.ec2_state_chang4e.name}"
+  rule      = "${aws_cloudwatch_event_rule.ec2_state_change.name}"
   target_id = "InvokeLambda"
-  arn       = "${aws_lambda_function.cloudwatch_event_handler}"
+  arn       = "${aws_lambda_function.cloudwatch_event_handler.arn}"
 }
