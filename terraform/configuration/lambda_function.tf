@@ -27,3 +27,12 @@ resource "aws_lambda_function" "cloudwatch_event_handler" {
   s3_bucket         = "aws-health-notif-demo-lambda-artifacts"
   s3_key            = "cloudwatch-event-handler/src.zip"
 }
+
+resource "aws_lambda_permission" "allow_cloudwatch" {
+  statement_id   = "AllowExecutionFromCloudWatch"
+  action         = "lambda:InvokeFunction"
+  function_name  = "${aws_lambda_function.cloudwatch_event_handler.cloudwatch_event_handler}"
+  principal      = "events.amazonaws.com"
+  source_arn     = "arn:aws:events:eu-west-1:111122223333:rule/RunDaily"
+  # qualifier      = "${aws_lambda_alias.test_alias.name}"
+}
