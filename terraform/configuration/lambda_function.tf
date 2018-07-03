@@ -46,8 +46,9 @@ resource "aws_lambda_function" "cloudwatch_event_handler" {
   handler       = "main.handler"
   runtime       = "python3.6"
 
-  s3_bucket = "aws-health-notif-demo-lambda-artifacts"
-  s3_key    = "cloudwatch-event-handler/src.zip"
+  s3_bucket         = "aws-health-notif-demo-lambda-artifacts"
+  s3_key            = "cloudwatch-event-handler/src.zip"
+  s3_object_version = "${var.cloudwatch_event_handler_version}"
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch" {
