@@ -18,21 +18,44 @@ resource "aws_iam_role" "cloudwatch_event_handler_lambda_iam" {
 EOF
 }
 
-resource "aws_lambda_function" "cloudwatch_event_handler" {
-  function_name    = "cloudwatch_event_handler"
-  role             = "${aws_iam_role.cloudwatch_event_handler_lambda_iam.arn}"
-  handler          = "main.handler"
-  runtime          = "python3.6"
+resource "aws_iam_role_policy" "lambda_cloudwatch_logging" {
+  name = "lambda-cloudwatch-logging"
+  role = "${aws_iam_role.cloudwatch_event_handler_lambda_iam.id}"
 
-  s3_bucket         = "aws-health-notif-demo-lambda-artifacts"
-  s3_key            = "cloudwatch-event-handler/src.zip"
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+EOF
+}
+
+resource "aws_lambda_function" "cloudwatch_event_handler" {
+  function_name = "cloudwatch_event_handler"
+  role          = "${aws_iam_role.cloudwatch_event_handler_lambda_iam.arn}"
+  handler       = "main.handler"
+  runtime       = "python3.6"
+
+  s3_bucket = "aws-health-notif-demo-lambda-artifacts"
+  s3_key    = "cloudwatch-event-handler/src.zip"
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch" {
-  statement_id   = "AllowExecutionFromCloudWatch"
-  action         = "lambda:InvokeFunction"
-  function_name  = "${aws_lambda_function.cloudwatch_event_handler.function_name}"
-  principal      = "events.amazonaws.com"
-  source_arn     = "${aws_cloudwatch_event_rule.ec2_state_change.arn}"
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = "${aws_lambda_function.cloudwatch_event_handler.function_name}"
+  principal     = "events.amazonaws.com"
+  source_arn    = "${aws_cloudwatch_event_rule.ec2_state_change.arn}"
+
   # qualifier      = "${aws_lambda_alias.test_alias.name}"
 }
