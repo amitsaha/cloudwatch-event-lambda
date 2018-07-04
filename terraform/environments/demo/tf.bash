@@ -1,17 +1,19 @@
-#!//usr/bin/bash
+#!/usr/bin/bash
 set -ex
 
 TF_SRC=$1
 echo $TF_SRC
 
-WORKDIR=$(mktemp -d)
+WORKDIR="./workspace"
+rm -rf $WORKDIR
+mkdir -p $WORKDIR
 
 cp {aws.tf,backend.tf} $WORKDIR/
 cp ../../src/$TF_SRC/*.tf $WORKDIR/
 
 pushd $WORKDIR
 terraform init
-terraform apply
+terraform $2
 popd
 
 rm -r $WORKDIR

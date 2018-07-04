@@ -1,5 +1,5 @@
-resource "aws_iam_role" "ec2_state_change_lambda_iam" {
-  name = "ec2_state_change_lambda_iam"
+resource "aws_iam_role" "health_event_notify_lambda_iam" {
+  name = "health_event_notify_lambda_iam"
 
   assume_role_policy = <<EOF
 {
@@ -18,9 +18,9 @@ resource "aws_iam_role" "ec2_state_change_lambda_iam" {
 EOF
 }
 
-resource "aws_iam_role_policy" "ec2_state_change_lambda_cloudwatch_logging" {
+resource "aws_iam_role_policy" "health_event_notify_cloudwatch_logging" {
   name = "lambda-cloudwatch-logging"
-  role = "${aws_iam_role.ec2_state_change_lambda_iam.id}"
+  role = "${aws_iam_role.health_event_notify_lambda_iam.id}"
 
   policy = <<EOF
 {
@@ -40,21 +40,21 @@ resource "aws_iam_role_policy" "ec2_state_change_lambda_cloudwatch_logging" {
 EOF
 }
 
-resource "aws_lambda_function" "ec2_state_change" {
-  function_name = "ec2_state_change"
-  role          = "${aws_iam_role.ec2_state_change_lambda_iam.arn}"
+resource "aws_lambda_function" "health_event_notify" {
+  function_name = "health_event_notify"
+  role          = "${aws_iam_role.health_event_notify_lambda_iam.arn}"
   handler       = "main.handler"
   runtime       = "python3.6"
 
   s3_bucket         = "aws-health-notif-demo-lambda-artifacts"
-  s3_key            = "ec2-state-change/src.zip"
-  s3_object_version = "${var.ec2_state_change_handler_version}"
+  s3_key            = "health-event/src.zip"
+  s3_object_version = "${var.health_event_notify_handler_version}"
 }
 
-resource "aws_lambda_permission" "ec2_state_change_cloudwatch" {
+resource "aws_lambda_permission" "health_event_notify_cloudwatch" {
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
-  function_name = "${aws_lambda_function.ec2_state_change.function_name}"
+  function_name = "${aws_lambda_function.health_event_notify.function_name}"
   principal     = "events.amazonaws.com"
-  source_arn    = "${aws_cloudwatch_event_rule.ec2_state_change.arn}"
+  source_arn    = "${aws_cloudwatch_event_rule.health_event_notify.arn}"
 }
