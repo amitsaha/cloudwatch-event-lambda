@@ -4,11 +4,12 @@ set -ex
 TF_SRC=$1
 echo $TF_SRC
 
-WORKDIR="./workspace"
+WORKDIR="./.workspace"
 rm -rf $WORKDIR
 mkdir -p $WORKDIR
 
-cp {aws.tf,backend.tf} $WORKDIR/
+cp *.tf $WORKDIR/
+cp terraform.tfvars $WORKDIR/
 cp ../../src/$TF_SRC/*.tf $WORKDIR/
 
 pushd $WORKDIR
