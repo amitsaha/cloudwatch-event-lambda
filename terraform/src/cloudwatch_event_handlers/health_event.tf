@@ -1,6 +1,6 @@
-resource "aws_cloudwatch_event_rule" "health_event_notify" {
+resource "aws_cloudwatch_event_rule" "health_event" {
   name        = "health-event"
-  description = "Notify when there is a scheduled health event across AWS resources"
+  description = "Invoke a lambda function when there is a scheduled health event across AWS resources"
 
   event_pattern = <<PATTERN
 {
@@ -10,13 +10,14 @@ resource "aws_cloudwatch_event_rule" "health_event_notify" {
 PATTERN
 }
 
-resource "aws_cloudwatch_event_target" "health_event_lambda" {
-  rule      = "${aws_cloudwatch_event_rule.health_event_notify.name}"
+resource "aws_cloudwatch_event_target" "health_event" {
+  rule      = "${aws_cloudwatch_event_rule.health_event.name}"
   target_id = "InvokeLambda"
-  arn       = "${aws_lambda_function.health_event_notify.arn}"
+  arn       = "${aws_lambda_function.health_event.arn}"
 }
-resource "aws_iam_role" "health_event_notify_lambda_iam" {
-  name = "health_event_notify_lambda_iam"
+
+resource "aws_iam_role" "health_event_lambda_iam" {
+  name = "health_event_lambda_iam"
 
   assume_role_policy = <<EOF
 {
@@ -35,9 +36,9 @@ resource "aws_iam_role" "health_event_notify_lambda_iam" {
 EOF
 }
 
-resource "aws_iam_role_policy" "health_event_notify_cloudwatch_logging" {
+resource "aws_iam_role_policy" "health_event_lambda_cloudwatch_logging" {
   name = "lambda-cloudwatch-logging"
-  role = "${aws_iam_role.health_event_notify_lambda_iam.id}"
+  role = "${aws_iam_role.health_event_lambda_iam.id}"
 
   policy = <<EOF
 {
@@ -57,9 +58,9 @@ resource "aws_iam_role_policy" "health_event_notify_cloudwatch_logging" {
 EOF
 }
 
-resource "aws_lambda_function" "health_event_notify" {
-  function_name = "health_event_notify"
-  role          = "${aws_iam_role.health_event_notify_lambda_iam.arn}"
+resource "aws_lambda_function" "health_event" {
+  function_name = "health_event"
+  role          = "${aws_iam_role.health_event_lambda_iam.arn}"
   handler       = "main.handler"
   runtime       = "python3.6"
 
@@ -68,10 +69,10 @@ resource "aws_lambda_function" "health_event_notify" {
   s3_object_version = "${var.health_event_notify_handler_version}"
 }
 
-resource "aws_lambda_permission" "health_event_notify_cloudwatch" {
+resource "aws_lambda_permission" "health_event_cloudwatch" {
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
-  function_name = "${aws_lambda_function.health_event_notify.function_name}"
+  function_name = "${aws_lambda_function.health_event.function_name}"
   principal     = "events.amazonaws.com"
-  source_arn    = "${aws_cloudwatch_event_rule.health_event_notify.arn}"
+  source_arn    = "${aws_cloudwatch_event_rule.health_event.arn}"
 }
