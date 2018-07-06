@@ -10,11 +10,12 @@ resource "aws_cloudwatch_event_rule" "ec2_state_change" {
 PATTERN
 }
 
-resource "aws_cloudwatch_event_target" "lambda" {
+resource "aws_cloudwatch_event_target" "ec2_state_change" {
   rule      = "${aws_cloudwatch_event_rule.ec2_state_change.name}"
   target_id = "InvokeLambda"
   arn       = "${aws_lambda_function.ec2_state_change.arn}"
 }
+
 resource "aws_iam_role" "ec2_state_change_lambda_iam" {
   name = "ec2_state_change_lambda_iam"
 
