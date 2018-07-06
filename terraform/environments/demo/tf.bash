@@ -9,12 +9,12 @@ rm -rf $WORKDIR
 mkdir -p $WORKDIR
 
 cp *.tf $WORKDIR/
-cp terraform.tfvars $WORKDIR/
+cp ../common/terraform.tfvars $WORKDIR/
 cp ../../src/$TF_SRC/*.tf $WORKDIR/
 
 pushd $WORKDIR
 terraform init
-terraform $2
+terraform $2 
 popd
 
 rm -r $WORKDIR
