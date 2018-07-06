@@ -14,7 +14,7 @@ cp ../../src/$TF_SRC/*.tf $WORKDIR/
 
 pushd $WORKDIR
 terraform init
-terraform $2 
+terraform "${@:2}"
 popd
 
 rm -r $WORKDIR
