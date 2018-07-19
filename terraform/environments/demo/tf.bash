@@ -6,7 +6,7 @@ echo $TF_SRC
 
 WORKDIR="./.workspace"
 rm -rf $WORKDIR
-mkdir -p $WORKDIR
+mkdir $WORKDIR
 
 cp *.tf $WORKDIR/
 cp ../common/terraform.tfvars $WORKDIR/
