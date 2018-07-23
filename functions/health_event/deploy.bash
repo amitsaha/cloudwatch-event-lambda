@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -ex
 
-# Create a .zip of src
 pushd src
 zip -r ../src.zip *
 popd
@@ -12,7 +11,9 @@ version=$(echo $version | python -c 'import json,sys; obj=json.load(sys.stdin); 
 
 # Deploy to demo environment
 pushd ../../terraform/environments/demo
-bash tf.bash cloudwatch_event_handlers apply -var health_event_handler_version=$version \
+bash tf.bash cloudwatch_event_handlers apply \
+    -var health_event_handler_version=$version \
+    -var health_event_webhook_url=$HEALTH_EVENT_WEBHOOK_URL \
     -target=aws_lambda_function.health_event \
     -target=aws_lambda_permission.health_event_cloudwatch \
     -target=aws_cloudwatch_event_target.health_event \

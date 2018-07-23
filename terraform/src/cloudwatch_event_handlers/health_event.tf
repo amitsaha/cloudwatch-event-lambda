@@ -67,6 +67,12 @@ resource "aws_lambda_function" "health_event" {
   s3_bucket         = "aws-health-notif-demo-lambda-artifacts"
   s3_key            = "health-event/src.zip"
   s3_object_version = "${var.health_event_notify_handler_version}"
+
+  environment {
+    variables = {
+      WEBHOOK_URL = "${var.health_event_webhook_url}"
+    }
+  }
 }
 
 resource "aws_lambda_permission" "health_event_cloudwatch" {
