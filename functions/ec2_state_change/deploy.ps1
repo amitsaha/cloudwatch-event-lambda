@@ -17,5 +17,5 @@ if ($LastExitCode -ne 0)
 
 # Deploy to demo environment
 Push-Location ..\..\terraform\environments\demo
-.\tf.ps1 cloudwatch_event_handlers apply -var aws_region=ap-southeast-2 -var ec2_state_change_handler_version=$($output.VersionId) -target=aws_lambda_function.ec2_state_change -target=aws_lambda_permission.ec2_state_change_cloudwatch -target=aws_cloudwatch_event_target.ec2_state_change -target=aws_iam_role_policy.ec2_state_change_lambda_cloudwatch_logging
+.\tf.ps1 cloudwatch_event_handlers apply "--var aws_region='ap-southeast-2' --var ec2_state_change_handler_version=$($output.VersionId) --target=aws_lambda_function.ec2_state_change --target=aws_lambda_permission.ec2_state_change_cloudwatch --target=aws_cloudwatch_event_target.ec2_state_change --target=aws_iam_role_policy.ec2_state_change_lambda_cloudwatch_logging"
 Pop-Location
