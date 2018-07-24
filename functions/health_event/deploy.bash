@@ -18,6 +18,7 @@ fi
 # Deploy to demo environment
 pushd ../../terraform/environments/demo
 bash tf.bash cloudwatch_event_handlers apply \
+    -var aws_region=ap-southeast-2 \
     -var health_event_notify_handler_version=$version \
     -var health_event_webhook_url=$HEALTH_EVENT_WEBHOOK_URL \
     -target=aws_lambda_function.health_event \

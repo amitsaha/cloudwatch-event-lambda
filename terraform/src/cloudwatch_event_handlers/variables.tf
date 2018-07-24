@@ -14,4 +14,5 @@ variable "health_event_notify_handler_version" {
 
 variable "health_event_webhook_url" {
   type = "string"
+  default = ""
 }

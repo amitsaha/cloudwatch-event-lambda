@@ -1,4 +1,8 @@
+variable "aws_region" {
+  type = "string"
+}
+
 # Configure the AWS Provider
 provider "aws" {
-  region = "ap-southeast-2"
+  region = "${var.aws_region}"
 }
