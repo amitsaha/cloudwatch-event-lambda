@@ -10,7 +10,7 @@ module "lambda_artifacts" {
 module "ec2_state_change_handler" {
   source = "../../modules/ec2_state_change_handler"
   lambda_artifacts_bucket_name = "${var.lambda_artifacts_bucket_name}"
-  ec2_state_change_handler_version = "${var.aws_health_event_handler_lambda_version}"
+  ec2_state_change_handler_version = "${var.ec2_state_change_handler_lambda_version}"
   
 }
 

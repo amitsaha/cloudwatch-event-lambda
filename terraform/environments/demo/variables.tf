@@ -8,8 +8,10 @@ variable "lambda_artifacts_bucket_name" {
 
 variable "aws_health_event_handler_lambda_version" {
     type = "string"
+    default = ""
 }
 
 variable "ec2_state_change_handler_lambda_version" {
     type = "string"
+    default = ""
 }
