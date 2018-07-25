@@ -12,11 +12,13 @@ version=$(echo $version | python -c 'import json,sys; obj=json.load(sys.stdin); 
 
 # Deploy to demo environment
 pushd ../../terraform/environments/demo
-bash tf.bash cloudwatch_event_handlers apply \
+terraform init
+terraform apply \
     -var aws_region=ap-southeast-2 \
     -var ec2_state_change_handler_version=$version \
-    -target=aws_lambda_function.ec2_state_change \
-    -target=aws_lambda_permission.ec2_state_change_cloudwatch \
-    -target=aws_cloudwatch_event_target.ec2_state_change \
-    -target=aws_iam_role_policy.ec2_state_change_lambda_cloudwatch_logging
+    -target=module.ec2_state_change_handler.module.ec2_state_change_handler.aws_lambda_function.lambda \
+    -target=module.ec2_state_change_handler.module.ec2_state_change_handler.aws_cloudwatch_event_rule.rule \
+    -target=module.ec2_state_change_handler.module.ec2_state_change_handler.aws_cloudwatch_event_target.target \
+    -target=module.ec2_state_change_handler.module.ec2_state_change_handler.aws_iam_role_policy.lambda_cloudwatch_logging \
+    -target=module.ec2_state_change_handler.module.ec2_state_change_handler.aws_lambda_permission.cloudwatch_lambda_execution
 popd
