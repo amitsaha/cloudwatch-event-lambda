@@ -38,3 +38,8 @@ variable "lambda_artifacts_bucket_key" {
 variable "lambda_version" {
   type    = "string"
 }
+
+variable "lambda_environment" {
+  type    = "map"
+  default = {}
+}

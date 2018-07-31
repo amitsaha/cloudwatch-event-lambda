@@ -6,8 +6,13 @@ variable "health_event_handler_version" {
     type = "string"
 }
 
+variable "health_event_handler_environment" {
+  type = "map"
+  default = {}
+}
 
-module "aws_health_event_handler" {
+
+module "health_event_handler" {
 
     source = "../cloudwatch_event_handlers"
 
@@ -28,4 +33,6 @@ PATTERN
     lambda_artifacts_bucket_name = "${var.lambda_artifacts_bucket_name}"
     lambda_artifacts_bucket_key = "health-event/src.zip"
     lambda_version = "${var.health_event_handler_version}"
+
+    lambda_environment = "${var.health_event_handler_environment}"
 }

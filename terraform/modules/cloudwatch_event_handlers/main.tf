@@ -62,6 +62,10 @@ resource "aws_lambda_function" "lambda" {
   s3_bucket         = "${var.lambda_artifacts_bucket_name}"
   s3_key            = "${var.lambda_artifacts_bucket_key}"
   s3_object_version = "${var.lambda_version}"
+
+  environment {
+        variables = "${var.lambda_environment}"
+  }
 }
 
 resource "aws_lambda_permission" "cloudwatch_lambda_execution" {

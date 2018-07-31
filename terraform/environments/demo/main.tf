@@ -4,7 +4,7 @@ provider "aws" {
 
 module "lambda_artifacts" {
   source = "../../modules/deployment_artifacts"
-  lambda_artifacts_bucket_name = "${var.lambda_artifacts_bucket_name}"  
+  artifacts_bucket_name = "${var.lambda_artifacts_bucket_name}"  
 }
 
 module "ec2_state_change_handler" {
