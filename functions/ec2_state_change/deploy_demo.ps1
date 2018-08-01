@@ -15,6 +15,7 @@ if ($LastExitCode -ne 0)
     exit $LastExitCode
 }
 
+$version=$output.VersionId
 # Deploy to demo environment
 Push-Location ..\..\terraform\environments\demo
 terraform init
