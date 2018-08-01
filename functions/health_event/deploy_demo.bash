@@ -18,10 +18,15 @@ fi
 # Deploy to demo environment
 pushd ../../terraform/environments/demo
 terraform init
-terraform apply \
+environment_map="{health_event_webhook_url=\"$HEALTH_EVENT_WEBHOOK_URL\"}"
+
+# We need to use `eval` here so as to pass environment_map
+# correctly to health_event_handler_lambda_environment variable
+# If you find a better way, please let me know
+eval terraform apply \
     -var aws_region=ap-southeast-2 \
     -var health_event_notify_handler_version=$version \
-    -var health_event_handler_environment="{ health_event_webhook_url=$HEALTH_EVENT_WEBHOOK_URL}" \
+    -var 'health_event_handler_lambda_environment=$environment_map' \
     -target=module.health_event_handler.module.health_event_handler.aws_lambda_function.lambda \
     -target=module.health_event_handler.module.health_event_handler.aws_cloudwatch_event_rule.rule \
     -target=module.health_event_handler.module.health_event_handler.aws_cloudwatch_event_target.target \

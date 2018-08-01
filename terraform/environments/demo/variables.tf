@@ -15,3 +15,8 @@ variable "ec2_state_change_handler_lambda_version" {
     type = "string"
     default = ""
 }
+
+variable "health_event_handler_lambda_environment" {
+  type = "map"
+  default = {}
+}

@@ -18,4 +18,5 @@ module "health_event_handler" {
   source = "../../modules/health_event_handler"
   lambda_artifacts_bucket_name = "${var.lambda_artifacts_bucket_name}"
   health_event_handler_version = "${var.aws_health_event_handler_lambda_version}"
+  health_event_handler_environment = "${var.health_event_handler_lambda_environment}"
 }

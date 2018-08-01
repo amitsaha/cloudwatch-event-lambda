@@ -1,4 +1,3 @@
-
 resource "aws_cloudwatch_event_rule" "rule" {
   name        = "${var.cloudwatch_event_rule_name}"
   description = "${var.cloudwatch_event_rule_description}"

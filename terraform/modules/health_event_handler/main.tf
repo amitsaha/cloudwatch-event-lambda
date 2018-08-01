@@ -8,7 +8,6 @@ variable "health_event_handler_version" {
 
 variable "health_event_handler_environment" {
   type = "map"
-  default = {}
 }
 
 
