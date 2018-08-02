@@ -1,4 +1,4 @@
-Push-Location  ..\..\terraform\environments/demo
+Push-Location  ..\..\..\..\terraform\environments/demo
 terraform init
 terraform apply `
     -var aws_region=ap-southeast-2 `

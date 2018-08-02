@@ -1,5 +1,10 @@
 $ErrorActionPreference = "Stop"
 
+if (-not (Test-Path env:WEBHOOK_URL))
+{
+    Write-Error "WEBHOOK_URL environment variable not defined"
+}
+
 Push-Location src
 Compress-Archive -Path * -Update -DestinationPath ..\src.zip
 Pop-Location
@@ -15,7 +20,7 @@ if ($LastExitCode -ne 0)
     exit $LastExitCode
 }
 $version=$output.VersionId
-$WEBHOOK_URL = "http://www.foo.com"
+
 # Deploy to demo environment
 Push-Location ..\..\terraform\environments/demo
 terraform init

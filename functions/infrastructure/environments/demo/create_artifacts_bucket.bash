@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -ex
 
-pushd ../../terraform/environments/demo
+pushd ../../../../terraform/environments/demo
 terraform init
 terraform apply \
     -var aws_region=ap-southeast-2 \
